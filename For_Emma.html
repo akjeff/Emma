@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f9eee8" />
+  <meta name="description" content="A little letter, from Jeff to Emma." />
+  <title>For Emma · A Letter from Jeff</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+    :root { --wine:#7a384a; --rose:#c47f8b; --ink:#4c3440; --muted:#8f6b74; --paper:#fffaf3; --bg:#faeee9; }
+    * { box-sizing:border-box; }
+    html,body {margin:0; min-height:100%;}
+    body {font-family:'DM Sans',system-ui,-apple-system,Segoe UI,sans-serif; color:var(--ink); background: radial-gradient(ellipse at 10% 10%,#fff9f5 0%,transparent 52%),radial-gradient(ellipse at 90% 88%,#edd1d2 0%,transparent 48%),#f7e7e5; min-height:100svh; display:flex; align-items:center; justify-content:center; padding:30px 18px; overflow-x:hidden;}
+    body::before {content:'';position:fixed;inset:0;pointer-events:none;opacity:.35;background-image:radial-gradient(#a87980 .6px,transparent .6px);background-size:27px 27px;mask-image:linear-gradient(120deg,transparent 15%,#000 65%);}
+    .float { position:fixed; pointer-events:none; z-index:0; color:#bc7685; opacity:.4; font-size:20px; animation:rise var(--dur,9s) linear infinite; left:var(--left,20%); animation-delay:var(--delay,0s); bottom:-12vh; }
+    @keyframes rise {from{transform:translate3d(0,0,0) rotate(-15deg);opacity:0}10%{opacity:.27}75%{opacity:.22}to{transform:translate3d(26px,-120vh,0) rotate(20deg);opacity:0}}
+    main { position:relative; z-index:1; width:min(100%,540px); }
+    .shell {background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.8);border-radius:26px;box-shadow:0 25px 75px rgba(112,58,76,.14); padding:clamp(24px,6vw,44px); text-align:center; backdrop-filter:blur(8px);}
+    .eyebrow {font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+    h1 {font:500 clamp(43px,11vw,62px)/1.2 'Great Vibes','Brush Script MT',cursive;color:var(--wine);margin:17px 0 0;}
+    .sub {font:italic 400 16px/1.6 'Playfair Display',Georgia,serif;color:var(--muted);margin:2px 0 0;}
+    .envelope-area {height:280px;display:grid;place-items:center;perspective:800px;}
+    .envelope {position:relative;width:260px;height:170px;filter:drop-shadow(0 20px 16px rgba(112,58,76,.18)); transform:translateY(7px);}
+    .env-back {position:absolute;inset:0;background:#df9aa5;border-radius:8px;}
+    .letter-peek {position:absolute;left:23px;right:23px;top:15px;height:140px;background:var(--paper);border:1px solid #eadbd0;border-radius:5px;box-shadow:0 1px 3px #a7707930;z-index:2;transition:transform .9s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:22px;color:var(--wine);font:italic 20px 'Playfair Display',Georgia,serif;}
+    .letter-peek span {font:11px 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;margin-top:9px;color:var(--muted);}
+    .env-fold {position:absolute;inset:0;z-index:3;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%);background:#ebb5bd;border-radius:8px;}
+    .env-pocket {position:absolute;inset:0;z-index:4;clip-path:polygon(0 0,50% 57%,100% 0,100% 100%,0 100%);background:linear-gradient(140deg,#f3cbd0,#e4a8b1);border-radius:8px;}
+    .env-flap {position:absolute;top:0;left:0;width:100%;height:62%;background:#edb7c0;clip-path:polygon(0 0,100% 0,50% 100%);z-index:6;transform-origin:top center;transition:transform .65s cubic-bezier(.2,.7,.25,1),z-index .01s .3s;}
+    .seal {position:absolute;left:50%;top:53%;transform:translate(-50%,-50%);width:46px;height:46px;display:grid;place-items:center;z-index:7;color:#fff;font-size:24px;background:#a6546d;border:3px double #e3a5b3;border-radius:50%;box-shadow:0 2px 5px #7e425050;transition:opacity .25s ease;}
+    .envelope.open .env-flap {transform:rotateX(180deg);z-index:1;}
+    .envelope.open .seal {opacity:0;}
+    .envelope.open .letter-peek {transform:translateY(-103px);transition-delay:.4s;}
+    .btn {appearance:none;border:0;border-radius:999px;background:var(--wine);color:white;font:600 13px 'DM Sans',sans-serif;letter-spacing:.055em;padding:15px 27px;cursor:pointer;box-shadow:0 9px 19px #7a384a27;transition:background .2s,transform .2s,box-shadow .2s;}
+    .btn:hover {background:#954b61;transform:translateY(-2px);box-shadow:0 12px 22px #7a384a32;}
+    .btn:focus-visible,.nav-btn:focus-visible {outline:3px solid #b86580;outline-offset:4px;}
+    .hint {margin:17px 0 0;font-size:11px;letter-spacing:.07em;color:var(--muted);}
+    [hidden] {display:none !important;}
+    .letter-shell {padding:clamp(18px,5vw,36px);}
+    .letter-heading {display:flex;align-items:center;justify-content:space-between;gap:12px;padding:1px 5px 21px;}
+    .mini-title {font:400 30px/1.1 'Great Vibes','Brush Script MT',cursive;color:var(--wine);}
+    .mini-heart {color:var(--rose);font-size:20px;}
+    .paper {position:relative;background:var(--paper);border:1px solid #eadfd7;border-radius:5px;min-height:360px;padding:clamp(27px,7vw,42px) clamp(23px,6vw,38px);box-shadow:0 8px 16px #7545570e,0 2px 4px #7545570b;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:left;}
+    .paper::before {content:'';position:absolute;inset:12px;border:1px solid #eddbd5;pointer-events:none;}
+    .paper::after {content:'❦';position:absolute;bottom:17px;right:23px;color:#d8b7b7;font-size:20px;}
+    .page {width:100%;position:relative;animation:turnin .45s ease both;}
+    @keyframes turnin {from{opacity:0;transform:translateX(13px) rotateY(-5deg)}to{opacity:1;transform:translateX(0) rotateY(0)}}
+    .page .salutation {font:500 29px 'Great Vibes','Brush Script MT',cursive;color:var(--wine);display:block;margin-bottom:14px;}
+    .page p {font:400 clamp(16px,4.2vw,18px)/1.85 'Playfair Display',Georgia,serif;margin:0;}
+    .page em {color:var(--wine);}
+    .page .ending {margin-top:23px;font:400 32px/1.4 'Great Vibes','Brush Script MT',cursive;color:var(--wine);text-align:center;}
+    .progress {display:flex;justify-content:center;gap:7px;margin:23px 0 13px;}
+    .dot {width:6px;height:6px;border-radius:50%;background:#e4c6cb;transition:all .2s;}
+    .dot.active {width:20px;border-radius:20px;background:var(--wine);}
+    .nav {display:flex;align-items:center;justify-content:space-between;gap:12px;}
+    .nav-btn {border:1px solid #dcb8c0;border-radius:999px;background:#fff9f8;color:var(--wine);font:600 12px 'DM Sans',sans-serif;min-width:95px;padding:12px 14px;cursor:pointer;transition:background .2s;}
+    .nav-btn:hover:not(:disabled) {background:#f8e9ed;}
+    .nav-btn:disabled {opacity:.33;cursor:default;}
+    .page-count {color:var(--muted);font-size:11px;letter-spacing:.065em;white-space:nowrap;}
+    .footer {text-align:center;color:var(--muted);font:italic 12px 'Playfair Display',Georgia,serif;margin:22px 0 0;}
+    @media (max-width:390px) {.envelope{transform:scale(.88)}.envelope-area{height:244px}.paper{min-height:390px}.nav-btn{min-width:77px;padding:11px}.letter-shell{padding:18px}.paper{padding:29px 26px}}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <div class="float" style="--left:8%;--dur:12s;--delay:-2s">♡</div>
+  <div class="float" style="--left:23%;--dur:10s;--delay:-6s">♥</div>
+  <div class="float" style="--left:66%;--dur:13s;--delay:-9s">♡</div>
+  <div class="float" style="--left:87%;--dur:11s;--delay:-4s">♡</div>
+  <main>
+    <section class="shell" id="intro" aria-label="Your letter">
+      <div class="eyebrow">A little something for you</div>
+      <h1>For Emma</h1>
+      <p class="sub">From my heart to yours.</p>
+      <div class="envelope-area">
+        <div class="envelope" id="envelope" aria-hidden="true">
+          <div class="env-back"></div>
+          <div class="letter-peek">My Amo <span>with all my love</span></div>
+          <div class="env-fold"></div>
+          <div class="env-pocket"></div>
+          <div class="env-flap"></div>
+          <div class="seal">♥</div>
+        </div>
+      </div>
+      <button class="btn" id="openButton" type="button">Open my letter ♡</button>
+      <p class="hint">Made with love, just for you</p>
+    </section>
+
+    <section class="shell letter-shell" id="letter" hidden aria-label="Letter pages">
+      <div class="letter-heading"><span class="mini-title">To my Amo</span><span class="mini-heart">♥</span></div>
+      <div class="paper" id="paper" aria-live="polite" aria-atomic="true">
+        <article class="page" id="pageContent"></article>
+      </div>
+      <div class="progress" id="progress" aria-hidden="true"></div>
+      <div class="nav">
+        <button class="nav-btn" id="previous" type="button">← Previous</button>
+        <span class="page-count" id="pageCount"></span>
+        <button class="nav-btn" id="next" type="button">Next →</button>
+      </div>
+      <p class="footer">Love, Jeff ♡</p>
+    </section>
+  </main>
+  <script>
+    const pages = [
+      `<span class="salutation">Amo,</span><p>Sometimes I struggle to put into words just how deeply I care about us. There are little moments that stay with me more than you probably realise, and they’ve become part of the way I carry you in my heart.</p>`,
+      `<p>I still think about our matching football jerseys at your house in Northampton. To anyone else they might just be tops, but to me they’re a reminder of us — of the little things that quietly became part of <em>our story.</em></p>`,
+      `<p>And I’ll never forget the times I would drop you off so you could catch the train. You’d get out of the car and walk away, and I would just sit there for a moment with tears in my eyes because it genuinely felt like <em>a piece of me had just left.</em></p>`,
+      `<p>I think that’s why I put so much pressure on myself sometimes. I stress myself because I want to give us the future we both deserve — something beautiful, secure and full of peace, love and joy.</p>`,
+      `<p>When I think about my future, I don’t just think about me anymore. <em>I think about us.</em></p><p style="margin-top:20px">And I look forward to the day when we no longer have to say goodbye at a train station.</p><div class="ending">I love you, Amo. ♥</div>`
+    ];
+    const intro = document.getElementById('intro');
+    const letter = document.getElementById('letter');
+    const pageContent = document.getElementById('pageContent');
+    const progress = document.getElementById('progress');
+    const pageCount = document.getElementById('pageCount');
+    const previous = document.getElementById('previous');
+    const next = document.getElementById('next');
+    let currentPage = 0;
+    let opened = false;
+    let isOpening = false;
+    function showPage(index) {
+      currentPage = Math.max(0,Math.min(index,pages.length-1));
+      pageContent.style.animation = 'none';
+      void pageContent.offsetWidth;
+      pageContent.style.animation = '';
+      pageContent.innerHTML = pages[currentPage];
+      pageCount.textContent = `Page ${currentPage+1} of ${pages.length}`;
+      progress.innerHTML = pages.map((_,i)=>`<span class="dot ${i===currentPage?'active':''}"></span>`).join('');
+      previous.disabled = currentPage===0;
+      next.textContent = currentPage===pages.length-1 ? 'Read again ↻' : 'Next →';
+    }
+    document.getElementById('openButton').addEventListener('click',()=>{
+      if(isOpening||opened) return;
+      isOpening = true;
+      document.getElementById('envelope').classList.add('open');
+      document.getElementById('openButton').disabled=true;
+      setTimeout(()=>{
+        intro.hidden=true;letter.hidden=false;opened=true;isOpening=false;showPage(0);
+        next.focus({preventScroll:true});
+      },1200);
+    });
+    previous.addEventListener('click',()=>showPage(currentPage-1));
+    next.addEventListener('click',()=>showPage(currentPage===pages.length-1?0:currentPage+1));
+    document.addEventListener('keydown',event=>{
+      if(!opened) return;
+      if(event.key==='ArrowRight')showPage(Math.min(currentPage+1,pages.length-1));
+      if(event.key==='ArrowLeft')showPage(Math.max(currentPage-1,0));
+    });
+  </script>
+</body>
+</html>
